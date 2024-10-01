@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neto-Bot</title>
+    <link rel="stylesheet" href="estilos.css"/>
+    <script src="vue.js"></script>
+    <style>
+        .loader {
+      color: #777777;
+      font-size: 20px;
+      margin: 100px auto;
+      width: 1em;
+      height: 1em;
+      border-radius: 50%;
+      position: relative;
+      text-indent: -9999em;
+      -webkit-animation: load4 1.3s infinite linear;
+      animation: load4 1.3s infinite linear;
+      -webkit-transform: translateZ(0);
+      -ms-transform: translateZ(0);
+      transform: translateZ(0);
+      }
+        @-webkit-keyframes load4 {
+          0%,
+          100% {
+            box-shadow: 0 -3em 0 0.2em, 2em -2em 0 0em, 3em 0 0 -1em, 2em 2em 0 -1em, 0 3em 0 -1em, -2em 2em 0 -1em, -3em 0 0 -1em, -2em -2em 0 0;
+          }
+          12.5% {
+            box-shadow: 0 -3em 0 0, 2em -2em 0 0.2em, 3em 0 0 0, 2em 2em 0 -1em, 0 3em 0 -1em, -2em 2em 0 -1em, -3em 0 0 -1em, -2em -2em 0 -1em;
+          }
+          25% {
+            box-shadow: 0 -3em 0 -0.5em, 2em -2em 0 0, 3em 0 0 0.2em, 2em 2em 0 0, 0 3em 0 -1em, -2em 2em 0 -1em, -3em 0 0 -1em, -2em -2em 0 -1em;
+          }
+          37.5% {
+            box-shadow: 0 -3em 0 -1em, 2em -2em 0 -1em, 3em 0em 0 0, 2em 2em 0 0.2em, 0 3em 0 0em, -2em 2em 0 -1em, -3em 0em 0 -1em, -2em -2em 0 -1em;
+          }
+          50% {
+            box-shadow: 0 -3em 0 -1em, 2em -2em 0 -1em, 3em 0 0 -1em, 2em 2em 0 0em, 0 3em 0 0.2em, -2em 2em 0 0, -3em 0em 0 -1em, -2em -2em 0 -1em;
+          }
+          62.5% {
+            box-shadow: 0 -3em 0 -1em, 2em -2em 0 -1em, 3em 0 0 -1em, 2em 2em 0 -1em, 0 3em 0 0, -2em 2em 0 0.2em, -3em 0 0 0, -2em -2em 0 -1em;
+          }
+          75% {
+            box-shadow: 0em -3em 0 -1em, 2em -2em 0 -1em, 3em 0em 0 -1em, 2em 2em 0 -1em, 0 3em 0 -1em, -2em 2em 0 0, -3em 0em 0 0.2em, -2em -2em 0 0;
+          }
+          87.5% {
+            box-shadow: 0em -3em 0 0, 2em -2em 0 -1em, 3em 0 0 -1em, 2em 2em 0 -1em, 0 3em 0 -1em, -2em 2em 0 0, -3em 0em 0 0, -2em -2em 0 0.2em;
+          }
+        }
+        @keyframes load4 {
+          0%,
+          100% {
+            box-shadow: 0 -3em 0 0.2em, 2em -2em 0 0em, 3em 0 0 -1em, 2em 2em 0 -1em, 0 3em 0 -1em, -2em 2em 0 -1em, -3em 0 0 -1em, -2em -2em 0 0;
+          }
+          12.5% {
+            box-shadow: 0 -3em 0 0, 2em -2em 0 0.2em, 3em 0 0 0, 2em 2em 0 -1em, 0 3em 0 -1em, -2em 2em 0 -1em, -3em 0 0 -1em, -2em -2em 0 -1em;
+          }
+          25% {
+            box-shadow: 0 -3em 0 -0.5em, 2em -2em 0 0, 3em 0 0 0.2em, 2em 2em 0 0, 0 3em 0 -1em, -2em 2em 0 -1em, -3em 0 0 -1em, -2em -2em 0 -1em;
+          }
+          37.5% {
+            box-shadow: 0 -3em 0 -1em, 2em -2em 0 -1em, 3em 0em 0 0, 2em 2em 0 0.2em, 0 3em 0 0em, -2em 2em 0 -1em, -3em 0em 0 -1em, -2em -2em 0 -1em;
+          }
+          50% {
+            box-shadow: 0 -3em 0 -1em, 2em -2em 0 -1em, 3em 0 0 -1em, 2em 2em 0 0em, 0 3em 0 0.2em, -2em 2em 0 0, -3em 0em 0 -1em, -2em -2em 0 -1em;
+          }
+          62.5% {
+            box-shadow: 0 -3em 0 -1em, 2em -2em 0 -1em, 3em 0 0 -1em, 2em 2em 0 -1em, 0 3em 0 0, -2em 2em 0 0.2em, -3em 0 0 0, -2em -2em 0 -1em;
+          }
+          75% {
+            box-shadow: 0em -3em 0 -1em, 2em -2em 0 -1em, 3em 0em 0 -1em, 2em 2em 0 -1em, 0 3em 0 -1em, -2em 2em 0 0, -3em 0em 0 0.2em, -2em -2em 0 0;
+          }
+          87.5% {
+            box-shadow: 0em -3em 0 0, 2em -2em 0 -1em, 3em 0 0 -1em, 2em 2em 0 -1em, 0 3em 0 -1em, -2em 2em 0 0, -3em 0em 0 0, -2em -2em 0 0.2em;
+          }
+        }
+    
+        </style>
+</head>
+
+<body>
+    <div class="loader">Loading...</div>
+    <div id="app">
+
+        <header id="myHeader">
+            <h1> {{HeaderData}}</h1>
+        </header>
+
+         <div class="clearfix"></div>
+
+         <section id="content">
+            <div v-show="First">
+                <article class="article">
+                    <h2>Titulo del articulo 1</h2>
+                    <p>Texto del articulo</p>
+                </article>
+                <article class="article">
+                    <h2>Titulo del articulo 2</h2>
+                    <p>Texto del articulo</p>
+                </article>
+                <article class="article">
+                    <h2>Titulo del articulo 3</h2>
+                    <p>Texto del articulo</p>
+                </article>
+
+
+            </div>
+            <div v-show="Second">
+                <article class="article">
+                    <h2>Titulo del articulo 14</h2>
+                    <p>Texto del articulo</p>
+                </article>
+                <article class="article">
+                    <h2>Titulo del articulo 15</h2>
+                    <p>Texto del articulo</p>
+                </article>
+                <article class="article">
+                    <h2>Titulo del articulo 16</h2>
+                    <p>Texto del articulo</p>
+                </article>
+
+            </div>
+         </section>
+
+         <div class="clearfix"></div>
+         <footer>
+            <ul>
+                <li>
+                    <button v-on:click="homeButton">HOME</button> 
+                    <button v-on:click="libraryButton">LIBRARY</button>
+                    <button v-on:click="settingsButton">SETTINGS</button>
+                </li>
+            </ul>
+            
+         </footer>
+    </div>
+</body>
+<script>
+    //data, methods, props, mounted, created, computed, watch, destroyed
+    const HolaMundo= {
+        data() {
+            return {
+                HeaderData: 'NetoBot connection',
+                InsideData: 'Este es el contenido interno',
+                First: true,
+                Second: true
+            }
+        },        
+        mounted() {
+
+        },
+        methods:{
+            homeButton()
+            {
+                this.HeaderData = "Ya le diste click";
+                this.First = false;
+            },
+            libraryButton()
+            {
+                this.HeaderData = "Ya le habias dado, detente";
+                this.Second = false;
+            },
+            settingsButton()
+            {
+                this.HeaderData = "Porque sigues haciendo eso";
+                this.First = true;
+                this.Second = true;
+            }
+        }
+    }
+    Vue.createApp(HolaMundo).mount('#app')
+</script>
+<script>
+    window.onscroll = function() {myFunction()};
+    
+    var header = document.getElementById("myHeader");
+    var sticky = header.offsetTop;
+    
+    function myFunction() {
+      if (window.pageYOffset > sticky) {
+        header.classList.add("sticky");
+      } else {
+        header.classList.remove("sticky");
+      }
+    }
+    </script>
+</html>

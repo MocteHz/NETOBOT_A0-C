@@ -1,0 +1,379 @@
+<!DOCTYPE HTML><html><head>
+  <title>Captive Portal Demo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <script src="vue.js"></script>
+  <script src='fonts.js' crossorigin='anonymous'></script>
+
+  <style>
+  .loader {
+    color: black;
+    font-size: 20px;
+    margin: 100px auto;
+    width: 1em;
+    border-radius: 50%;
+    position: relative;
+    text-indent: -9999em;
+    -webkit-animation: load4 1.3s infinite linear;
+    animation: load4 1.3s infinite linear;
+    -webkit-transform: translateZ(0);
+    -ms-transform: translateZ(0);
+    transform: translateZ(0);
+  }
+  #app{
+    align-self: center;
+    align-content: center;
+    max-width: 450px;
+    min-height: 800px;
+  }
+  #content{
+    text-align: center;
+  }
+  form{
+    width: 150px;
+  }
+  #DatosWifi{
+    border-radius: 5px;
+    background: lightgray;
+    width: 300px;
+    align-self: center;
+    padding: 20px;
+    margin: auto;
+    border: 3px solid black;
+
+  }
+  #content{
+    max-width: 90%;
+    min-width: 282px;
+    margin: auto;
+    border: 1px solid black;
+    height: 800px;
+
+  }
+  #EnviaButton{
+    background-color: lightgray;
+    padding: 15px;
+    border-radius: 5px;
+  }
+  #Leyenda{
+    width: 280px;
+    margin: auto;
+  }
+  #PiePag{
+    background-color:rgb(226, 226, 226);
+    width:375px;
+    height: 25px;
+    color: darkgrey;
+    text-align: center;
+    padding: 15px;
+
+    position: absolute;
+    top: 754px;
+
+  }
+  .ButtonSSID{
+    background-color: lightgray; /* Green */
+    border: none;
+    padding: 10px 15px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    width: 140px;
+    height: 45px;
+    display: inline;
+    margin: 1px;
+  }
+  .ButtonSSID:hover {
+    background-color: gray; /* Green */
+  }
+  table{
+    float: center;
+    border-collapse: collapse;
+    border-bottom: 1px solid #111;
+    width: 398px;
+  }
+  tr:nth-child(even) {background-color: #f2f2f2;}
+  table, td, th {
+    
+    text-align: left;
+  }
+  @-webkit-keyframes load4 {
+    0%,
+    100% {
+      box-shadow: 0 -3em 0 0.2em, 2em -2em 0 0em, 3em 0 0 -1em, 2em 2em 0 -1em, 0 3em 0 -1em, -2em 2em 0 -1em, -3em 0 0 -1em, -2em -2em 0 0;
+    }
+    12.5% {
+      box-shadow: 0 -3em 0 0, 2em -2em 0 0.2em, 3em 0 0 0, 2em 2em 0 -1em, 0 3em 0 -1em, -2em 2em 0 -1em, -3em 0 0 -1em, -2em -2em 0 -1em;
+    }
+    25% {
+      box-shadow: 0 -3em 0 -0.5em, 2em -2em 0 0, 3em 0 0 0.2em, 2em 2em 0 0, 0 3em 0 -1em, -2em 2em 0 -1em, -3em 0 0 -1em, -2em -2em 0 -1em;
+    }
+    37.5% {
+      box-shadow: 0 -3em 0 -1em, 2em -2em 0 -1em, 3em 0em 0 0, 2em 2em 0 0.2em, 0 3em 0 0em, -2em 2em 0 -1em, -3em 0em 0 -1em, -2em -2em 0 -1em;
+    }
+    50% {
+      box-shadow: 0 -3em 0 -1em, 2em -2em 0 -1em, 3em 0 0 -1em, 2em 2em 0 0em, 0 3em 0 0.2em, -2em 2em 0 0, -3em 0em 0 -1em, -2em -2em 0 -1em;
+    }
+    62.5% {
+      box-shadow: 0 -3em 0 -1em, 2em -2em 0 -1em, 3em 0 0 -1em, 2em 2em 0 -1em, 0 3em 0 0, -2em 2em 0 0.2em, -3em 0 0 0, -2em -2em 0 -1em;
+    }
+    75% {
+      box-shadow: 0em -3em 0 -1em, 2em -2em 0 -1em, 3em 0em 0 -1em, 2em 2em 0 -1em, 0 3em 0 -1em, -2em 2em 0 0, -3em 0em 0 0.2em, -2em -2em 0 0;
+    }
+    87.5% {
+      box-shadow: 0em -3em 0 0, 2em -2em 0 -1em, 3em 0 0 -1em, 2em 2em 0 -1em, 0 3em 0 -1em, -2em 2em 0 0, -3em 0em 0 0, -2em -2em 0 0.2em;
+    }
+  }
+  @keyframes load4 {
+    0%,
+    100% {
+      box-shadow: 0 -3em 0 0.2em, 2em -2em 0 0em, 3em 0 0 -1em, 2em 2em 0 -1em, 0 3em 0 -1em, -2em 2em 0 -1em, -3em 0 0 -1em, -2em -2em 0 0;
+    }
+    12.5% {
+      box-shadow: 0 -3em 0 0, 2em -2em 0 0.2em, 3em 0 0 0, 2em 2em 0 -1em, 0 3em 0 -1em, -2em 2em 0 -1em, -3em 0 0 -1em, -2em -2em 0 -1em;
+    }
+    25% {
+      box-shadow: 0 -3em 0 -0.5em, 2em -2em 0 0, 3em 0 0 0.2em, 2em 2em 0 0, 0 3em 0 -1em, -2em 2em 0 -1em, -3em 0 0 -1em, -2em -2em 0 -1em;
+    }
+    37.5% {
+      box-shadow: 0 -3em 0 -1em, 2em -2em 0 -1em, 3em 0em 0 0, 2em 2em 0 0.2em, 0 3em 0 0em, -2em 2em 0 -1em, -3em 0em 0 -1em, -2em -2em 0 -1em;
+    }
+    50% {
+      box-shadow: 0 -3em 0 -1em, 2em -2em 0 -1em, 3em 0 0 -1em, 2em 2em 0 0em, 0 3em 0 0.2em, -2em 2em 0 0, -3em 0em 0 -1em, -2em -2em 0 -1em;
+    }
+    62.5% {
+      box-shadow: 0 -3em 0 -1em, 2em -2em 0 -1em, 3em 0 0 -1em, 2em 2em 0 -1em, 0 3em 0 0, -2em 2em 0 0.2em, -3em 0 0 0, -2em -2em 0 -1em;
+    }
+    75% {
+      box-shadow: 0em -3em 0 -1em, 2em -2em 0 -1em, 3em 0em 0 -1em, 2em 2em 0 -1em, 0 3em 0 -1em, -2em 2em 0 0, -3em 0em 0 0.2em, -2em -2em 0 0;
+    }
+    87.5% {
+      box-shadow: 0em -3em 0 0, 2em -2em 0 -1em, 3em 0 0 -1em, 2em 2em 0 -1em, 0 3em 0 -1em, -2em 2em 0 0, -3em 0em 0 0, -2em -2em 0 0.2em;
+    }
+  }
+  .modal{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #111111bd;
+    display: flex;
+  }
+  .modal-container{
+    margin: auto;
+    background-color: white;
+    width: 90%;
+    max-width: 300px;
+    max-height: 90%;
+    border-radius: 6px;
+    padding: 3em 2.5em;
+    display: grid;
+
+  }
+  #BotonEnviar{
+    display: inline-block;
+    width: 120px;
+    float: left;
+    background-color: lightgreen;
+    border: 1px solid grey;
+    padding: 5px;
+    border-radius: 5px;
+    margin-top: 7px;
+  }
+  #BotonCerrar{
+    display: inline-block;
+    width: 120px;
+    float: right;
+    background-color: lightcoral;
+    border: 1px solid grey;
+    padding: 5px;
+    border-radius: 5px;
+    margin-top: 7px;
+  }
+  .WifiConfig {
+    margin: auto;
+    display: block;
+    width: 250px;
+  }
+  .WifiSendConfig{
+    background-color: white;
+    padding: 1px;
+    border: none;
+  }
+  .tableWifi{
+    width: auto;
+    float: center;
+    display: inline;
+
+  }
+
+  
+  </style>
+  </head>
+
+  <body>
+  
+    <div id="app">
+
+      <div class="loader" v-show="loaderShow" >
+        Loading...
+      </div>
+
+      <div id="content" v-show="contentShow">
+        <h2>Portal Cautivo Neto-Bot</h2>
+        <br>
+        <p id="Leyenda">
+         Gracias por adquirir Sistema de entretenimiento Neto-Bot
+        </p>
+        <br>
+          Estas apunto de comenzar
+        <br>  
+          Si tu sistema ya se conectó a WiFi, busca en tu red, si no se ha conectado o cambiaste el Wifi, puedes insertar las nuevas credenciales o buscar tu SSID:
+        <br>
+        <button class="ButtonSSID" v-on:click="SendWSM" > {{BotonBusca}} <i class='fas fa-redo-alt fa-spin' style='font-size:24px' v-if="EsperandoSSIDs"></i></button>
+        <br>
+        <button class="ButtonSSID" @click="modalShow = ! modalShow">Agregar Wifi</button>
+        
+        <div class="tableWifi">
+          <table v-show="TableShow">
+            <thead>
+              <tr>
+                <th>SSID</th>
+                <th>RSSI</th>
+                <th>ENC</th>
+                <th>index</th>
+              </tr>
+            </thead>
+  
+            <tbody>
+              <tr  v-for="(Wifi, index) in Wifis"> 
+                <td><button class="WifiSendConfig" @click="CallModal( index )"> {{Wifi.SSID}} </button></td>
+                <td> {{Wifi.RSSI}} </td>
+                <td> {{Wifi.ENC}} </td>
+                <td> {{index}} </td>
+              </tr>
+            </tbody>
+          </table>
+
+        </div>
+        
+
+        <br>
+
+
+        <div id="PiePag">
+          Bienvenido a los 90s &trade;
+        </div>
+      </div>
+      
+      <section class="modal" v-show="modalShow">
+        <div class="modal-container">
+          <h2 class="modal-title">
+            Agrega tu WiFi
+          </h2>
+          <p class="modal-paragraph">
+            Envía la consiguración al dispositivo
+          </p>
+          <div class="WifiConfig">
+            <label for="ssid" class="WifiConfig" >SSID:</label>
+            <input type="text" class="form-control WifiConfig" id="modal-ssid" :value="ssid">
+            <label for="password" class="WifiConfig">Contraseña:</label>
+            <input type="password" class="form-control WifiConfig" id="modal-pass" :value="password">
+          </div>
+          <div class="BotonModal">
+            <button id="BotonEnviar" @click="SendWSM">Conectar a Wifi</button>
+            <button id="BotonCerrar" @click="modalShow = ! modalShow;">Cerrar</button>
+          </div>
+                 </div>
+      </section>
+    </div>
+
+</body>
+<script>
+
+
+const apptst= {
+  
+    data() {
+        return {
+          contador : 0,
+          isRunning: true,
+          loaderShow: true,
+          contentShow: false,
+          modalShow: false,
+          Wifis: null, 
+          connection_ready: false,
+          connection_error: false,
+          websocket: [],
+          TableShow: false,
+          EsperandoSSIDs: false,
+          BotonBusca: "Buscar SSID",
+          ssid: '',
+          password: ''
+        }
+    },        
+    mounted() {
+      if(this.isRunning){
+        this.interval = setInterval(() => { 
+          this.contador++;
+          if(this.contador > 2){
+            this.loaderShow = false;
+            this.contentShow = true;
+          }
+        }, 1000);
+      }
+      this.initWebSockets();
+    },
+    methods: {
+      SendWSM(){
+        this.websocket.send("BuscaSSID");
+        console.log("Pidiendo SSID");
+        this.EsperandoSSIDs = true;
+        this.BotonBusca = "";
+      },
+      CallModal(index){
+        console.log("Llamaste al index no.:");
+        console.log(index);
+        console.log(this.Wifis[index].SSID);
+        this.ssid = this.Wifis[index].SSID;
+        this.modalShow = true;
+
+      },
+      initWebSockets() {
+        //ask for a nickname
+        //connect to Sockets Bay
+        this.websocket      = new WebSocket('ws://'+location.hostname+':81/', ['arduino']);
+        console.log("Iniciando WebSockets");
+        //
+        this.websocket.onopen    = this.onSocketOpen;
+        this.websocket.onmessage = this.onSocketMessage;
+        this.websocket.onerror   = this.onSocketError;
+      },
+      onSocketOpen(evt){
+        this.connection_ready = true;
+        this.websocket.sent("Conectados");
+      },
+      onSocketMessage(evt){
+        console.log(evt.data); 
+        if(evt.data === "Connected")
+        {
+          return;
+        }
+        this.Wifis = JSON.parse(evt.data); 
+        console.log(this.Wifis);
+        if (this.Wifis.SSIDList != undefined){
+          this.Wifis = this.Wifis.SSIDList;
+          this.TableShow = true;
+          this.EsperandoSSIDs = false;
+          this.BotonBusca = "Buscar SSID";
+        }
+      },
+      onSocketError(evt){
+        this.connection_error = true;
+      }
+    }
+  }
+  Vue.createApp(apptst).mount('#app');
+  </script>
+  </html>

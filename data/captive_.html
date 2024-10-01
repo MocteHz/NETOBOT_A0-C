@@ -1,0 +1,712 @@
+<!DOCTYPE HTML><html><head>
+    <title>Captive Portal</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+    <script src="vue.js"></script>
+   
+    <link rel="stylesheet" href="fonts.css">
+    <style>
+    body{
+
+        width: 95%;
+        background-color: black;
+        color: white;
+        padding: 20px;
+        max-width: 310px;
+        float: center;
+        stroke: white;
+        fill: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0 auto;
+    }
+    #app{
+      justify-content: center;
+      align-items: center;
+      font-size:larger;
+      font-size: larger;
+      font-weight: 120;
+    }
+    h2{
+      color: white;
+    }    
+    .modal-in{
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #111111bd;
+        color: white;
+        display: flex;
+        animation: scaleUp .1s cubic-bezier(0.165, 0.840, 0.440, 1.000) forwards;
+    }
+    .modal-out{
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #111111bd;
+        display: flex;
+        animation: scaleDown .1s linear forwards;
+    }
+    @keyframes scaleUp {
+        0% {
+            transform:scale(.8) translateY(1000px);
+            opacity:0;
+        }
+        100% {
+            transform:scale(1) translateY(0px);
+            opacity:1;
+        }
+    }
+    @keyframes scaleDown {
+        0% {
+            transform:scale(1) translateY(0px);
+            opacity:1;
+        }
+        100% {
+            transform:scale(.8) translateY(1000px);
+            opacity:0;
+        }
+    }
+    .modal-container{
+        margin: auto;
+        background-color: #222222;
+        color: white    ;
+        width: 90%;
+        max-width: 300px;
+        max-height: 90%;
+        border-radius: 10px;
+        padding: 3em 2.5em;
+        display: grid;
+        
+    }
+    .modal-overlay {
+        margin: auto;
+        background-color: white;
+        color: black    ;
+        width: 90%;
+        max-width: 300px;
+        max-height: 90%;
+        border-radius: 6px;
+        padding: 3em 2.5em;
+        display: grid;
+    }
+    button {
+        width: 330px;
+        height: 75px;
+        background-color: blue;
+        border: none;
+        border-radius: 10px;
+        color: white;
+        margin-top: 2px;
+    }
+    .button-modal{
+        width: 320px;
+        height: 45px;
+        background-color: blue;
+        border: none;
+        border-radius: 10px;
+        color: white;
+        margin-top: 5px;
+    }
+    .form-control{
+        width: 300px;
+        border: 2px solid blue;
+        background-color: #222222;
+        padding: 7px;
+        border-radius: 10px;
+        color: white;
+    }
+    .button-form {
+      width: 300px;
+      height: 45px;
+      background-color: black;
+      border: none;
+      border-radius: 10px;
+      color: #fbfbfb;
+      margin-top: 2px;
+      text-align: left;
+      stroke: white;
+      fill: white;
+    }
+    .button-form-Ref{
+      display:block;
+      float: right;
+        width: 50px;
+        height: 50px;
+        background-color: grey;
+        border: none;
+        border-radius: 25px;
+        color: #fbfbfb;
+        margin-top: 2px;
+        text-align: center;
+    }
+    .button-formout {
+      width: 300px;
+      height: 75px;
+      background-color: darkgrey;
+      border: none;
+      border-radius: 10px;
+      color: #fbfbfb;
+      margin-top: 2px;
+      text-align: left;
+      stroke: white;
+      fill: white;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+    }
+    .button-blue{
+      width: 300px;
+      height: 75px;
+      background-color: blue;
+      border: none;
+      border-radius: 10px;
+      color: #fbfbfb;
+      margin-top: 2px;
+      text-align: left;
+      stroke: white;
+      fill: white;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .EsperaSSID{
+      width: 300px;
+      height: 45px;
+      vertical-align: middle;
+      stroke: white;
+      fill: white;
+      margin-top: 20px;
+    }
+    .configured {
+      background-color: blue;
+    }
+    .new-wifi-modal-container {
+      display: none;
+    }
+    .new-wifi-modal-show {
+      display: flex;
+    }
+    .izqbot{
+      display: inline-block;
+      float: left;
+
+    }
+    .derbot{
+      display: inline-block;
+      float: right;
+
+    }
+    #Actualiza.rotating {
+      animation: rotate 2s linear infinite;
+    }
+    @keyframes rotate {
+      from {
+        transform: rotate(360deg);
+      }
+      to {
+        transform: rotate(0deg);
+      }
+    }
+    .WifiConnections{
+      stroke: white;
+      fill: white;
+    }
+    .botonder{
+      display: inline-block;
+      float: right;
+    }
+    .botonizq{
+      display: inline-block;
+      float: left;
+    }
+    .password-container {
+      position: relative;
+      display: inline-block;
+    }
+    .password-input {
+      padding-right: 80px; /* Ajusta este valor según el ancho de tu botón */
+      background-color: black;
+    }
+    .password-button {
+      position: absolute;
+      top: 24px;
+      right: 20px;
+      height: 20px;
+      /* Estiliza el botón como desees, por ejemplo: */
+      background-color: #222222;
+      border: none;
+      cursor: pointer;
+      width: 15px;
+      fill:white;
+      stroke:  #222222 ;
+    }
+    #encryption-type{
+      background-color: #222222;
+      color: white;
+      border-radius: 5px;
+      border: 2px solid blue;
+      height: 20px;
+    }
+    #hidden-network{
+      background-color: #222222;
+      color: white;
+      border-radius: 5px;
+      border: 2px solid blue;
+      height: 20px;
+    }
+    .Security{
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+    #AgregaWifi{
+      color: blue;
+      font-weight: bold;
+      font-size: 15px;
+    }
+    </style>
+    </head>
+
+    <body>
+  
+        <div id="app">
+
+            <div class="Image" v-show="true">
+            </div>
+      
+            <div id="content" >
+                <h2>Portal Cautivo Neto-Bot</h2>
+
+                <br>
+                <p id="Leyenda">
+                Gracias por adquirir Sistema de entretenimiento Neto-Bot
+                </p>
+                Estas apunto de comenzar
+                <br>  
+                Si tu sistema ya se conectó a WiFi, busca en tu red, si no se ha conectado o cambiaste el Wifi, puedes insertar las nuevas credenciales o buscar tu SSID:
+                <br>
+                <br>
+                
+                <p class="escrit">
+                  Redes Conocidas:
+                </p>
+                <div v-for="(Wifi, index) in knownWifis" v-show="UnknownWifisShow">
+                  <button v-bind:class="{'button-formout': true, 'button-blue': Wifi.SSID === conStats.SSID}" @click="CallModal( index )"> 
+                    <div class="izqbot">
+                      <svg width="18px" height="18px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M7 18C7 18.5523 6.55228 19 6 19C5.44772 19 5 18.5523 5 18C5 17.4477 5.44772 17 6 17C6.55228 17 7 17.4477 7 18Z" stroke-width="2"/>
+                      <path d="M11 19C11 15.6863 8.31371 13 5 13" stroke-width="2" stroke-linecap="round" />
+                      <path d="M15 19C15 13.4772 10.5228 9 5 9" stroke-width="2" stroke-linecap="round"/>
+                      <path d="M19 19C19 11.268 12.732 5 5 5" stroke-width="2" stroke-linecap="round"/>
+                      </svg>
+                      
+                      {{Wifi.SSID}} 
+                    </div>
+
+                    <div class="derbot">
+                      <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M11 15L13.7158 12.2842V12.2842C13.8728 12.1272 13.8728 11.8728 13.7158 11.7158V11.7158L11 9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path d="M3 12C3 4.5885 4.5885 3 12 3C19.4115 3 21 4.5885 21 12C21 19.4115 19.4115 21 12 21C4.5885 21 3 19.4115 3 12Z" stroke-width="2"/>
+                      </svg>
+                    </div>
+                  </button>
+                </div>
+                <div class="EsperaSSID">
+                  {{BotonBusca}}  
+
+                  <button class="button-form-Ref" v-on:click="SendWSM" > 
+                    
+                    <svg :class="{ rotating: isRotating }" id="Actualiza" width="25px" height="25px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20.5 15C18.9558 18.0448 15.7622 21 12 21C7.14776 21 3.58529 17.5101 3 13" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M3.5 9C4.89106 5.64934 8.0647 3 12 3C16.7819 3 20.4232 6.48993 21 11" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M21 21L21 15.6C21 15.2686 20.7314 15 20.4 15V15L15 15" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M9 9L3.6 9V9C3.26863 9 3 8.73137 3 8.4L3 3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </button>
+                </div>
+                
+                <div v-for="(Wifi, index) in unknownWifis" v-show="UnknownWifisShow">
+                  <button
+                    class="button-form"
+                    :class="{ 'configured': configWifis.some(c => c.SSID === Wifi.SSID) }"
+                    @click="CallModalUnknown( index )"
+                  >
+                    <div class="botonizq">
+                      {{ Wifi.SSID }}
+                    </div>
+                    <div class="botonder">
+                      <!-- Candado cerrado -->
+                      <svg v-show="!(Wifi.ENC === 'OPEN')"  width="18px" height="18px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+                        <path d="m 8 1 c -2.199219 0 -4 1.800781 -4 4 v 2 c -1.109375 0 -2 0.890625 -2 2 v 5 c 0 0.554688 0.445312 1 1 1 h 10 c 0.554688 0 1 -0.445312 1 -1 v -5 c 0 -1.109375 -0.890625 -2 -2 -2 v -2 c 0 -2.199219 -1.800781 -4 -4 -4 z m 0 2 c 1.125 0 2 0.875 2 2 v 2 h -4 v -2 c 0 -1.125 0.875 -2 2 -2 z m 0 0"/>
+                      </svg>
+                      <!-- Candado Abierto -->
+                      <svg v-show="Wifi.ENC === 'OPEN'" width="18px" height="18px" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+                        <path d="m 8 0 c -2.199219 0 -4 1.800781 -4 4 v 1 c 0 0.550781 0.449219 1 1 1 s 1 -0.449219 1 -1 v -1 c 0 -1.125 0.875 -2 2 -2 s 2 0.875 2 2 v 4 h -6 c -1.109375 0 -2 0.890625 -2 2 v 5 c 0 0.554688 0.445312 1 1 1 h 10 c 0.554688 0 1 -0.445312 1 -1 v -5 c 0 -1.109375 -0.890625 -2 -2 -2 v -4 c 0 -2.199219 -1.800781 -4 -4 -4 z m 0 0"/>
+                      </svg>
+                    </div>
+                  </button>
+                </div>
+                
+                <button id="AgregaWifi" class="button-form" @click="showAddWifiModal">Agrega WiFi</button>
+
+                <br>
+
+            </div>
+            
+            <!-- Modal de agregar un nuevo Wifi -->
+            <section :class="ModalClassWifi" v-show="AddWifiModal" >
+                <div :class="modalclass">
+                    <h2 class="modal-title">
+                        {{ssid}}
+                    </h2>
+                    <br>
+                    <div class="password-container" >
+                      <label>Password:</label>
+                      <input
+                        placeholder="Contraseña"
+                        :type="showPassword ? 'text' : 'password'"
+                        v-model="password"
+                        class="form-control"
+                      />
+                      <button class="password-button" @click="showPassword = !showPassword">
+                        <!-- SVG para el estado de contraseña oculta -->
+                        <svg v-show="!showPassword" width="18" height="18" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+                          <path d="m 1.53125 0.46875 l -1.0625 1.0625 l 14 14 l 1.0625 -1.0625 l -2.382812 -2.382812 c 1.265624 -1.0625 2.171874 -2.496094 2.589843 -4.097657 c -0.914062 -3.523437 -4.097656 -5.984375 -7.738281 -5.988281 c -1.367188 0.011719 -2.707031 0.371094 -3.894531 1.042969 z m 6.46875 3.53125 c 2.210938 0 4 1.789062 4 4 c -0.003906 0.800781 -0.246094 1.578125 -0.699219 2.238281 l -1.46875 -1.46875 c 0.105469 -0.242187 0.164063 -0.503906 0.167969 -0.769531 c 0 -1.105469 -0.894531 -2 -2 -2 c -0.265625 0.003906 -0.527344 0.0625 -0.769531 0.167969 l -1.46875 -1.46875 c 0.660156 -0.453125 1.4375 -0.695313 2.238281 -0.699219 z m -6.144531 0.917969 c -0.753907 0.898437 -1.296875 1.957031 -1.59375 3.09375 c 0.914062 3.523437 4.097656 5.984375 7.738281 5.988281 c 0.855469 -0.007812 1.703125 -0.152344 2.511719 -0.425781 l -1.667969 -1.667969 c -0.277344 0.058594 -0.5625 0.089844 -0.84375 0.09375 c -2.210938 0 -4 -1.789062 -4 -4 c 0.003906 -0.28125 0.035156 -0.566406 0.09375 -0.84375 z m 0 0"/>
+                        </svg>
+                          <!-- Contenido del SVG -->
+                        <!-- SVG para el estado de contraseña visible -->
+                        <svg v-show="showPassword" width="18" height="18" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+                          <path d="m 8 2 c -3.648438 0.003906 -6.832031 2.476562 -7.738281 6.007812 c 0.914062 3.527344 4.097656 5.988282 7.738281 5.992188 c 3.648438 -0.003906 6.832031 -2.476562 7.738281 -6.011719 c -0.914062 -3.523437 -4.097656 -5.984375 -7.738281 -5.988281 z m 0 2 c 2.210938 0 4 1.789062 4 4 s -1.789062 4 -4 4 s -4 -1.789062 -4 -4 s 1.789062 -4 4 -4 z m 0 2 c -1.105469 0 -2 0.894531 -2 2 s 0.894531 2 2 2 s 2 -0.894531 2 -2 s -0.894531 -2 -2 -2 z m 0 0" />
+                        </svg>
+                      </button>
+                    </div>
+                    <div class="BotonModal">
+                        <button class="button-modal" @click="connectToWifi">Conectar a Wifi</button>
+                        <button class="button-modal" @click="eraseWifiConfig(); cierraModal()">Opciones Avanzadas</button>
+                        <button class="button-modal" @click="cierraModal">Cerrar</button>
+                    </div>
+                </div>
+            </section>
+
+            
+            <!-- Modal de Datos conexion wifi -->
+            <section :class="modalConfig" v-show="modalConfigcon" >
+              <div :class="modalclass">
+                  <h2 class="modal-title">
+                      {{conStats.SSID}}
+                  </h2>
+                  
+                    La IP de conexión es:
+                  <div >
+                    <p class="ip">
+                      {{conStats.IP}}
+                    </p>
+                      La mascara de subred es:
+                    <p class="subred">
+                      {{conStats.SUBMASK}}
+                    </p>
+                      El modo de conexion es
+                    <p class="sta">
+                      {{conStats.connectionMode}}
+                    </p>
+
+                  </div>  
+                  
+                  <div class="BotonModal">
+                      <button class="button-modal" @click="eraseWifiConfig">Olvidar Contraseña</button>
+                      <button class="button-modal" @click="modalConfigCon = false; modalConfig = 'modal-out'">Cerrar</button>
+                  </div>
+              </div>
+          </section>
+
+          <!-- Modal de Datos Wifi -->
+          <div v-show="ShowModalWIFIadd" :class="ModalAddWifi">
+            <div :class="modalclass">
+              <h2>Add WiFi</h2>
+              <label>SSID:</label>
+              <input type="text" v-model="newSSID" class="form-control" />
+              <br />
+              
+              <div class="password-container" >
+                <label>Password:</label>
+                <input
+                  :type="showPassword ? 'text' : 'password'"
+                  v-model="newPassword"
+                  class="form-control"
+                />
+                <button class="password-button" @click="showPassword = !showPassword">
+                  <!-- SVG para el estado de contraseña oculta -->
+                  <svg v-show="!showPassword" width="18" height="18" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+                    <path d="m 1.53125 0.46875 l -1.0625 1.0625 l 14 14 l 1.0625 -1.0625 l -2.382812 -2.382812 c 1.265624 -1.0625 2.171874 -2.496094 2.589843 -4.097657 c -0.914062 -3.523437 -4.097656 -5.984375 -7.738281 -5.988281 c -1.367188 0.011719 -2.707031 0.371094 -3.894531 1.042969 z m 6.46875 3.53125 c 2.210938 0 4 1.789062 4 4 c -0.003906 0.800781 -0.246094 1.578125 -0.699219 2.238281 l -1.46875 -1.46875 c 0.105469 -0.242187 0.164063 -0.503906 0.167969 -0.769531 c 0 -1.105469 -0.894531 -2 -2 -2 c -0.265625 0.003906 -0.527344 0.0625 -0.769531 0.167969 l -1.46875 -1.46875 c 0.660156 -0.453125 1.4375 -0.695313 2.238281 -0.699219 z m -6.144531 0.917969 c -0.753907 0.898437 -1.296875 1.957031 -1.59375 3.09375 c 0.914062 3.523437 4.097656 5.984375 7.738281 5.988281 c 0.855469 -0.007812 1.703125 -0.152344 2.511719 -0.425781 l -1.667969 -1.667969 c -0.277344 0.058594 -0.5625 0.089844 -0.84375 0.09375 c -2.210938 0 -4 -1.789062 -4 -4 c 0.003906 -0.28125 0.035156 -0.566406 0.09375 -0.84375 z m 0 0"/>
+                  </svg>
+                    <!-- Contenido del SVG -->
+                  <!-- SVG para el estado de contraseña visible -->
+                  <svg v-show="showPassword" width="18" height="18" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+                    <path d="m 8 2 c -3.648438 0.003906 -6.832031 2.476562 -7.738281 6.007812 c 0.914062 3.527344 4.097656 5.988282 7.738281 5.992188 c 3.648438 -0.003906 6.832031 -2.476562 7.738281 -6.011719 c -0.914062 -3.523437 -4.097656 -5.984375 -7.738281 -5.988281 z m 0 2 c 2.210938 0 4 1.789062 4 4 s -1.789062 4 -4 4 s -4 -1.789062 -4 -4 s 1.789062 -4 4 -4 z m 0 2 c -1.105469 0 -2 0.894531 -2 2 s 0.894531 2 2 2 s 2 -0.894531 2 -2 s -0.894531 -2 -2 -2 z m 0 0" />
+                  </svg>
+                </button>
+              </div>
+              <div class="Security">
+                <label>Tipo de seguridad:</label>
+                <select id="encryption-type" name="encryption-type">
+                  <option value="Open">Open</option>
+                  <option value="WEP">WEP</option>
+                  <option value="WPA">WPA</option>
+                  <option value="WPA2">WPA2</option>
+                  <option value="WPA+WPA2">WPA+WPA2</option>
+                  <option value="WPA2-EAP">WPA2-EAP</option>
+                  <option value="WPA3">WPA3</option>
+                  <option value="WPA2+WPA3">WPA2+WPA3</option>
+                  <option value="WAPI">WAPI</option>
+                </select>
+              </div>
+              
+              <div class="Oculta">
+                <label>Red oculta?:</label>
+                <select id="hidden-network" name="hidden-network">
+                  <option value="No">No</option>
+                  <option value="Si">Si</option>
+                </select>
+              </div>
+              <button class="button-modal" @click="addWifi">Add WiFi</button>
+              <button class="button-modal" @click="ShowModalWIFIadd = false; ModalAddWifi = 'modal-out';">Close</button>
+            </div>
+            
+          </div>
+        </div>
+    </body>
+  
+    <script>
+const apptst= {
+  
+    data() {
+        return {
+          AddWifiModal: false,
+          Wifis: null,                  //La lista de los SSIDs que se conocen
+          connection_ready: false,
+          connection_error: false,
+          websocket: [],
+          UnknownWifisShow: false,
+          EsperandoSSIDs: false,
+          BotonBusca: "Buscar SSID",
+          ssid: '',
+          password: '',
+          modalclass: 'modal-container',
+          ModalClassWifi: 'modal-out',
+          configWifis: [],              // configuraciones conocidas
+          selectedWifi: null,
+          ShowModalWIFIadd: false,
+          newSSID: '',
+          newPassword: '',
+          knownWifis: [],
+          unknownWifis: [],
+          isRotating: false,
+          modalConfigcon: true,
+          modalConfig: 'modal-out',
+          conStats: [],
+          temporalIndex: 0, 
+          ModalAddWifi:  'modal-out',
+          showPassword: false
+
+        }
+    },        
+    mounted() {
+
+      
+      this.initWebSockets();
+    },
+    methods: {
+      SendWSM(){
+        this.websocket.send("BuscaSSID");
+        console.log("Pidiendo SSID");
+        this.EsperandoSSIDs = true;
+        this.BotonBusca = "Esperando SSID";
+        this.isRotating = true;
+
+      },
+      CallModal(index){
+        console.log("Llamaste al index no.:");
+        console.log(index);
+        console.log(this.knownWifis[index].SSID);
+        this.ssid = this.knownWifis[index].SSID;
+        this.temporalIndex = index;
+        this.modalConfig = 'modal-in';
+        this.modalConfigcon = true ;
+
+      },
+      CallModalUnknown(index){
+        console.log("Llamaste al index no.:");
+        console.log(index);
+        console.log(this.unknownWifis[index].SSID);
+        this.ssid = this.unknownWifis[index].SSID;
+
+        this.AddWifiModal = true;
+        this.ModalClassWifi = 'modal-in';
+      },
+      initWebSockets() {
+        //ask for a nickname
+        //connect to Sockets Bay
+        this.websocket      = new WebSocket('ws://'+location.hostname+':81/', ['arduino']);
+        console.log("Iniciando WebSockets");
+        //
+        this.websocket.onopen    = this.onSocketOpen;
+        this.websocket.onmessage = this.onSocketMessage;
+        this.websocket.onerror   = this.onSocketError;
+        console.log("Se iniciaron");
+      },
+      onSocketOpen(evt) {
+        this.connection_ready = true;
+        this.websocket.send("ConnectionStatus");
+        this.websocket.send("GetJsonString");
+        this.websocket.send("BuscaSSID");
+        this.EsperandoSSIDs = true;
+        this.BotonBusca = "Esperando SSID";
+        this.isRotating = true;
+      },
+      onSocketMessage(evt) {
+        console.log(evt.data); 
+        if(evt.data === "Connected")
+        {
+          return;
+        }
+        if(evt.data === "Config Erased"){
+          return;
+        }
+        var Recibed = JSON.parse(evt.data); 
+        console.log(Recibed);
+        if (Recibed.SSIDList != undefined){
+          this.Wifis = Recibed.SSIDList;
+          this.UnknownWifisShow = true;
+          this.EsperandoSSIDs = false;
+          this.BotonBusca = "Buscar SSID";
+          this.isRotating = false;
+          // Extract known and available SSIDs and passwords
+          var knownSSIDsList = (this.configWifis ?? []);
+          var discoveredSSIDsList = (this.Wifis ?? []);
+
+          var outputKnown = [];
+          var outputUnknown = [];
+
+          // Find matches between known and discovered SSIDs
+          for (var discovered of discoveredSSIDsList) {
+              for (var known of knownSSIDsList) {
+                  if (discovered.SSID === known.ssid) {
+                      outputKnown.push({SSID: discovered.SSID, password: known.password});
+                      break;
+                      console.log(outputKnown[known]);
+                  }
+              }
+
+              if (discovered.SSID !== outputKnown[outputKnown.length - 1]?.SSID) {
+                  outputUnknown.push({SSID: discovered.SSID, RSSI: discovered.RSSI, ENC: discovered.ENC});
+              }
+          }
+
+          // Print output as JSON
+          //console.log("Known Wifis");
+          //console.log(JSON.stringify({known: outputKnown}));
+          //console.log("Unknown Wifis");
+          //console.log(JSON.stringify({unknown: outputUnknown}));
+          this.knownWifis = outputKnown;
+          this.unknownWifis = outputUnknown;
+
+        }
+        if (Recibed.type === "WiFiConfig"){
+          console.log(evt.data);
+          this.configWifis = JSON.parse(evt.data).wifis;
+          console.log("First Configlist recibed");
+          console.log(JSON.stringify(this.configWifis));
+          var outputKnown = [];
+          var knownSSIDsList = (this.configWifis ?? []);
+          for (var known of knownSSIDsList) {
+            outputKnown.push({SSID: known.ssid, password: known.password});
+          }
+          console.log(outputKnown);
+          this.knownWifis = outputKnown;
+          console.log("Redes Conocidas");
+          console.log(this.knownWifis);
+          this.UnknownWifisShow=true;
+          if(this.AddWifiModal === true){
+            this.AddWifiModal = false;
+            this.ModalClassWifi = 'modal-out';
+          }
+        }
+        if (Recibed.type === "StatusConfig")  {
+          console.log(Recibed);
+          this.conStats = Recibed;
+        }
+        if (evt.data === "ConfiguredWifis") {
+          this.configWifis = JSON.parse(evt.data);
+          
+        }
+      },
+      onSocketError(evt) {
+        this.connection_error = true;
+      },
+      showAddWifiModal() {
+          this.newSSID = '';
+          this.newPassword = '';
+          this.ShowModalWIFIadd = true;
+          this.ModalAddWifi = 'modal-in';
+        },
+      addWifi() {
+        const encryptionType = document.getElementById("encryption-type").value;
+        const data = {
+          type: "AddWifi",
+          SSID: this.newSSID,
+          password: this.newPassword,
+          encryptionType: encryptionType
+        };
+        this.websocket.send(JSON.stringify(data));
+        console.log(JSON.stringify(data));
+        this.ShowModalWIFIadd = false;
+
+      },
+      connectToWifi() {
+        this.websocket.send(
+          JSON.stringify({
+            type: "ConnectTo",
+            ssid: this.ssid,
+            password: this.password
+          }));
+
+        console.log(
+          JSON.stringify({
+            type: "ConnectTo",
+            ssid: this.ssid,
+            password: this.password
+          }));
+        this.ShowModalWIFIadd = false;
+      },
+      eraseWifiConfig() {
+        this.knownWifis[this.temporalIndex].SSID;
+        const message = {
+              type: "EraseWF",
+              SSID: this.knownWifis[this.temporalIndex].SSID
+            };
+        this.websocket.send(JSON.stringify(message));
+        console.log(message);
+      },
+      cierraModal() {
+        this.ModalClassWifi = 'modal-out';
+        this.password = "";
+      },
+      StatusCheck() {
+        this.websocket.send("ConnectionStatus");
+        console.log("Pidiendo Status");
+      }
+    }
+  }
+  Vue.createApp(apptst).mount('#app');
+    </script>
+</html>
+

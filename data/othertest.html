@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>WebSockets file uploader</title>
+  </head>
+  <body>
+    <div id="app">
+      <h1>WebSockets file uploader</h1>
+      <div>
+        <input type="file" id="file-input" ref="fileInput" style="display: none;"  v-on:change="onFileChange">
+        <button v-on:click="openFileDialog">Select file</button>
+        <button v-on:click="uploadFile">Upload</button>
+      </div>
+      <div>
+        <progress id="progress-bar" value="0" max="100"></progress>
+        <div id="status"></div>
+      </div>
+    </div>
+
+    <script src="vue.js"></script>
+    <script>
+      const app = Vue.createApp({
+        data() {
+          return {
+            websocket: null,
+            file: null,
+            uploadUrl: "/upload"
+          };
+        },
+        mounted() {
+          // Initialize WebSocket connection
+          this.websocket = new WebSocket('ws://'+location.hostname+':81/', ['arduino']);
+          this.websocket.onopen = (event) => {
+            console.log("WebSocket connection opened");
+          };
+          this.websocket.onmessage = (event) => {
+            console.log(`Received message: ${event.data}`);
+            try {
+              message = JSON.parse(event.data);
+            } catch (error) {
+              console.error("Error parsing JSON:", error);
+              // handle error, e.g. show error message to user
+            }
+            if (message && message.type === "upload-progress") {
+              const percentComplete = Math.round(
+                (message.loaded / message.total) * 100
+              );
+              this.updateProgressBar(percentComplete);
+            } else if (message && message.type === "upload-complete") {
+              this.uploadComplete();
+            }
+          };
+          this.websocket.onerror = (event) => {
+            console.error("WebSocket error:", event);
+          };
+          this.websocket.onclose = (event) => {
+            console.log("WebSocket connection closed:", event);
+          };
+        },
+        methods: {
+          openFileDialog() {
+            this.$refs.fileInput.click();
+          },
+          uploadFile() {
+            console.log("Upload File");
+            if (this.file) {
+              const reader = new FileReader();
+              reader.onload = () => {
+                const buffer = reader.result;
+                const filename = this.file.name;
+                const filesize = this.file.size;
+                this.sendUploadRequest(filename, filesize, buffer);
+              };
+              reader.readAsArrayBuffer(this.file);
+            }
+          },
+          sendUploadRequest(filename, filesize, buffer) {
+            const message = {
+              type: "upload-request",
+              filename: filename,
+              filesize: filesize
+            };
+            this.websocket.send(JSON.stringify(message));
+            const chunkSize = 4096;
+            let offset = 0;
+            while (offset < buffer.byteLength) {
+              const slice = buffer.slice(offset, offset + chunkSize);
+              this.websocket.send(slice);
+              offset += slice.byteLength;
+            }
+          },
+          updateProgressBar(percentComplete) {
+            const progressBar = document.getElementById("progress-bar");
+            progressBar.value = percentComplete;
+            const status = document.getElementById("status");
+            status.textContent = `${percentComplete}% uploaded... please wait`;
+          },
+          uploadComplete() {
+            const progressBar = document.getElementById("progress-bar");
+            progressBar.value = 100;
+            const status = document.getElementById("status");
+            status.textContent = "File upload complete!";
+          },
+          onFileChange(event) {
+            this.file = event.target.files[0];
+          },
+
+        }
+      });
+
+      app.mount("#app");
+    </script>
+  </body>
+</html>

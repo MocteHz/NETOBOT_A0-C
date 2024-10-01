@@ -1,0 +1,212 @@
+body {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background-color: black;
+}
+.container {
+    margin: 15px;
+    position: relative;
+    background-color: white;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+.header{
+    background-color: black;
+    color: white;
+    text-align: center;
+    line-height: 30px;
+}
+.footer {
+    background-color: black;
+    color: white;
+    text-align: center;
+    line-height: 35px;
+    display: flex;
+    justify-content: space-around;
+    align-items:start;
+    padding-top: 25px;
+
+}
+.Center {
+    flex: 1;
+    background-color: white;
+    overflow-y: auto;
+    padding: 1rem;
+
+    display: flex; /* Add this to make the Center section a flex container */
+    flex-direction: column; /* Add this to align elements vertically */
+
+}
+.footer button {
+    background-color: black;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    border-radius: 5px;
+    border: 1px solid white;
+    width: 23%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    stroke: white;
+    fill: white;
+}
+.footer button:hover {
+    background-color: grey;
+}
+input[type="range"] {
+  width: 99%;
+  display: block;
+}
+.bottom-container {
+    flex-grow: 1; /* Add this to make the bottom-container occupy the remaining space */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+/* The rest of the CSS remains the same */
+.button-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+.top-row, .bottom-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+.top-row {
+    margin-bottom: 5px;
+}
+.svg-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2px;
+    margin: 0 2px;
+    width: 100px;
+    height: 50px;
+}
+.bottom-row .svg-container {
+    flex-grow: 1;
+    max-width: 50%;
+}
+.svg-container:hover {
+    background-color: rgba(0, 0, 0, 0.1); /* Change the background color */
+    transform: scale(1.1); /* Scale the container */
+    transition: transform 0.3s, background-color 0.3s; /* Add a transition for a smooth effect */
+}
+.patterns-container {
+    display: flex;
+    flex-direction: column;
+    width: calc(100% - 2rem);
+}
+.field {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding: 10px;
+    cursor: pointer;
+    width: calc(100% - 2rem);
+    border: 1px solid #999;
+
+}
+.field:hover {
+    background-color: #f0f0f0;
+}
+.library-icon,
+.heart-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+}
+.line {
+    width: 100%;
+    height: 1px;
+    background-color: #ccc;
+    position: absolute;
+    top: 50%;
+}
+.field-name {
+    font-size: 16px;
+}
+.list-display {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 300px;
+    margin-top: 20px;
+}
+
+.modal{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #111111bd;
+    color: white;
+    display: flex;
+}
+.modal-container{
+    margin: auto;
+    background-color: #dddddd;
+    color: black    ;
+    width: 90%;
+    max-width: 300px;
+    max-height: 90%;
+    border-radius: 10px;
+    padding: 3em 2.5em;
+    display: grid;
+    stroke: grey;
+    border: #111111bd, 2px;
+    
+}
+.modal-overlay {
+    margin: auto;
+    background-color: white;
+    color: black    ;
+    width: 90%;
+    max-width: 300px;
+    max-height: 90%;
+    border-radius: 6px;
+    padding: 3em 2.5em;
+    display: grid;
+}
+.image-container{
+    border: #111111bd, 2px;
+    border-radius: 2px;
+}
+.buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1em;
+  }
+  .image-container {
+    margin-bottom: 1em;
+  }
+  label {
+    display: block;
+    margin-top: 0.5em;
+  }
+  .checkbox-container {
+    display: flex;
+    align-items: center;
+    margin-top: 0.5em;
+  }
+  .checkbox-container input[type='checkbox'] {
+    margin-left: 0.5em;
+  }
+  .progress-bar{
+    width:250px;
+  }

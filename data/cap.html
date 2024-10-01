@@ -1,0 +1,167 @@
+<!DOCTYPE HTML><html><head>
+    <title>Captive Portal Demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="vue.js"></script>
+
+    <style>
+
+    </style>
+    </head>
+    <body>
+
+        <div id="app">
+            <div id="MainPage">
+                <section class="alta">
+
+                </section>
+                <section class="media">
+
+                </section>
+                <section class="baja">
+
+                </section>
+
+            </div>
+            <section class="modalConectarWifi">
+                <div :class="modalclass">
+                    <h2 class="modal-title">
+                        {{ssid}}
+                    </h2>
+                    <div class="WifiConfig">
+                        <input type="password" class="form-control" id="modal-pass" placeholder="Contrasenia"  v-model="password" >
+                    </div>
+                    <div class="BotonModal">
+                        <button class="button-modal" @click="connectToWifi">Conectar a Wifi</button>
+                        <button class="button-modal" @click="eraseWifiConfig">Opciones Avanzadas</button>
+                        <button class="button-modal" @click="cierraModal">Cerrar</button>
+                    </div>
+                </div>
+            </section>
+            <section class="modalAgregaWifi">
+                <h2>Add WiFi</h2>
+                <label>SSID:</label>
+                <input type="text" v-model="newSSID" />
+                <br />
+                <label>Password:</label>
+                <input type="password" v-model="newPassword" />
+                <br />
+                <button @click="addWifi">Add WiFi</button>
+                <button @click="showModal = false">Close</button>
+            </section>
+            <section class="modal3">
+
+            </section>
+        </div>
+    </body>
+    <script>
+
+    const app= {
+
+        data() {
+            return{
+                ModalConnectShow: false,
+                ModalAgregaWifi: false, 
+                
+                //Objetos listados Wifi
+                ConfigsInMemory: [],
+                AvailableWifis: [],
+                knownWifis: [],
+                unknownWifis: [],
+                //boton de busqueda
+                EsperandoSSIDs: false,
+                BotonBusca: "Buscar SSID",
+                //Información ModalConectaWifi
+                modalSSID: '',
+                modalpassword: '',
+
+                modalclass: 'modal-container',
+                selectedWifi: '',
+
+                connection_error: false,
+                websocket: [],
+                EsperandoSSIDs: false,
+                MuestraDisponibles: false,
+
+            }
+        },
+        mounted() {
+            this.initWebSockets();
+        },
+        methods: {
+            initWebSockets() {
+                //ask for a nickname
+                this.websocket      = new WebSocket('ws://'+location.hostname+':81/', ['arduino']);
+                console.log("Iniciando WebSockets");
+                this.websocket.onopen    = this.onSocketOpen;
+                this.websocket.onmessage = this.onSocketMessage;
+                this.websocket.onerror   = this.onSocketError;
+                console.log("Se iniciaron");
+            },
+            onSocketOpen(evt){
+                this.connection_ready = true;
+                this.websocket.send("Conectados");
+                this.EsperandoSSIDs = true;
+                this.BotonBusca = "Esperando SSID";
+            },
+            onSocketMessage(evt){
+                console.log(evt.data); 
+                if(evt.data === "Connected"){
+                    return;
+                }3
+                if(evt.data === "Config Erased"){
+                    return;
+                }
+                var Recibed = JSON.parse(evt.data); 
+                console.log(Recibed);
+                if (Recibed.SSIDList != undefined){
+                    this.AvailableWifis = Recibed.SSIDList;
+                    this.MuestraDisponibles = true;
+                    this.EsperandoSSIDs = false;
+                    this.BotonBusca = "Buscar SSID";
+                    // Extract known and available SSIDs and passwords
+                    var knownSSIDsList = (this.ConfigsInMemory ?? []);
+                    var discoveredSSIDsList = (this.AvailableWifis ?? []);
+
+                    var outputKnown = [];
+                    var outputUnknown = [];
+
+                    // Find matches between known and discovered SSIDs
+                    for (var discovered of discoveredSSIDsList) {
+                        for (var known of knownSSIDsList) {
+                            if (discovered.SSID === known.ssid) {
+                                outputKnown.push({SSID: discovered.SSID, password: known.password});
+                                break;
+                                console.log(outputKnown[known]);
+                            }
+                        }
+
+                        if (discovered.SSID !== outputKnown[outputKnown.length - 1]?.SSID) {
+                            outputUnknown.push({SSID: discovered.SSID, RSSI: discovered.RSSI, ENC: discovered.ENC});
+                        }
+                    }
+                    this.knownWifis = outputKnown;
+                    this.unknownWifis = outputUnknown;
+                }
+                if (Recibed.name === "WiFiConfig"){
+                    console.log(evt.data);
+                    this.ConfigsInMemory = JSON.parse(evt.data).wifis;
+                    console.log("Memory Config list recibed");
+                    console.log(JSON.stringify(this.configWifis));
+                    var outputKnown = [];
+                    var knownSSIDsList = (this.ConfigsInMemory ?? []);
+                    for (var known of knownSSIDsList) {
+                        outputKnown.push({SSID: known.ssid, password: known.password});
+                        this.knownWifis = outputKnown;
+                    }
+                }
+            },
+            onSocketError(evt){
+                this.connection_error = true;
+            },
+        }
+    }
+    Vue.createApp(app).mount('#app');
+
+    </script>
+    </html>
+
